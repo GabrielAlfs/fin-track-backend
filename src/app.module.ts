@@ -6,6 +6,8 @@ import { UsersModule } from './users/application/users.module';
 import { UsersInfrastructureModule } from './users/infrastructure/users-infrastructure.module';
 import { AccountsModule } from './accounts/application/accounts.module';
 import { AccountsInfrastructureModule } from './accounts/infrastructure/accounts-infrastructure.module';
+import { TransactionsModule } from './transactions/application/transactions.module';
+import { TransactionsInfrastructureModule } from './transactions/infrastructure/transactions-infrastructure.module';
 
 @Module({
   imports: [],
@@ -22,6 +24,9 @@ export class AppModule {
         }),
         AccountsModule.withInfrastructure({
           module: AccountsInfrastructureModule.use(options),
+        }),
+        TransactionsModule.withInfrastructure({
+          module: TransactionsInfrastructureModule.use(options),
         }),
       ],
     };
