@@ -4,6 +4,8 @@ import { CoreModule } from './core/core.module';
 import { AppController } from './app.controller';
 import { UsersModule } from './users/application/users.module';
 import { UsersInfrastructureModule } from './users/infrastructure/users-infrastructure.module';
+import { AccountsModule } from './accounts/application/accounts.module';
+import { AccountsInfrastructureModule } from './accounts/infrastructure/accounts-infrastructure.module';
 
 @Module({
   imports: [],
@@ -17,6 +19,9 @@ export class AppModule {
         CoreModule.forRoot(options),
         UsersModule.withInfrastructure({
           module: UsersInfrastructureModule.use(options),
+        }),
+        AccountsModule.withInfrastructure({
+          module: AccountsInfrastructureModule.use(options),
         }),
       ],
     };

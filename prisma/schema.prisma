@@ -9,7 +9,19 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  username  String   @unique @db.VarChar(20)
-  createdAt DateTime @default(now())
+  id        String    @id @default(uuid())
+  username  String    @unique @db.VarChar(20)
+  createdAt DateTime  @default(now())
+  accounts  Account[]
+}
+
+model Account {
+  id             String   @id @default(uuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  balanceInCents Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId])
 }
