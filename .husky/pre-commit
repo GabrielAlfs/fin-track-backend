@@ -17,7 +17,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "🧪 Rodando testes..."
-npx jest --bail --findRelatedTests $STAGED_FILES
+npx jest --bail --findRelatedTests --passWithNoTests $STAGED_FILES
 if [ $? -ne 0 ]; then
   echo "❌ Alguns testes falharam. Corrija-os antes de commitar."
   exit 1
