@@ -9,6 +9,8 @@ import { AccountsInfrastructureModule } from './contexts/accounts/infrastructure
 import { TransactionsModule } from './contexts/transactions/application/transactions.module';
 import { TransactionsInfrastructureModule } from './contexts/transactions/infrastructure/transactions-infrastructure.module';
 import { UsersAclModule } from './contexts/users/infrastructure/users-acl.module';
+import { AccountsAclModule } from './contexts/accounts/infrastructure/accounts-acl.module';
+
 @Module({
   imports: [],
   controllers: [AppController],
@@ -19,13 +21,17 @@ export class AppModule {
       UsersInfrastructureModule.use(options),
     );
 
+    const accountsAclModule = AccountsAclModule.withInfrastructure(
+      AccountsInfrastructureModule.use(options),
+    );
+
     return {
       module: AppModule,
       imports: [
         CoreModule.forRoot(options),
         UsersModule.withInfrastructure({
           module: UsersInfrastructureModule.use(options),
-          acls: [usersAclModule],
+          acls: [usersAclModule, accountsAclModule],
         }),
         AccountsModule.withInfrastructure({
           module: AccountsInfrastructureModule.use(options),

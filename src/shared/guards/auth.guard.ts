@@ -7,6 +7,7 @@ import {
 import { Request } from 'express';
 import { AuthUser } from '../../common/types/auth-user.types';
 import { UserExistsPort } from '../contracts/user-exists.port';
+import { Assert } from 'src/common/util/assert';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -14,17 +15,15 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
-    const userId = request.headers['x-user-id'];
 
-    if (typeof userId !== 'string') {
-      throw new UnauthorizedException('Missing or invalid user-id header');
-    }
+    const userId = Assert.notEmpty(
+      request.headers['x-user-id'] as string | undefined,
+      new UnauthorizedException('Missing or invalid X-User-Id header'),
+    );
 
     const userExists = await this.userExistsPort.userExists(userId);
 
-    if (!userExists) {
-      throw new UnauthorizedException('User not found');
-    }
+    Assert.isTrue(userExists, new UnauthorizedException('User not found'));
 
     request['user'] = {
       sub: userId,
