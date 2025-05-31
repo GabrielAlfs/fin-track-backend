@@ -1,7 +1,7 @@
 import {
   Transaction,
   TransactionType,
-} from 'src/transactions/domain/transaction';
+} from 'src/contexts/transactions/domain/transaction';
 import {
   Transaction as PrismaTransaction,
   TransactionType as PrismaTransactionType,

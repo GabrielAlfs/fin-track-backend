@@ -1,4 +1,4 @@
-import { Account } from 'src/accounts/domain/account';
+import { Account } from 'src/contexts/accounts/domain/account';
 import { Account as PrismaAccount } from '@prisma/client';
 
 export class PrismaAccountMapper {
