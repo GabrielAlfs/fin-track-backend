@@ -1,8 +1,8 @@
 import { DynamicModule, Module, Type } from '@nestjs/common';
+import { UsersController } from '../presentation/http/users.controller';
 
 @Module({
-  imports: [],
-  controllers: [],
+  controllers: [UsersController],
   providers: [],
 })
 export class UsersModule {

@@ -8,6 +8,7 @@ import { AccountsModule } from './accounts/application/accounts.module';
 import { AccountsInfrastructureModule } from './accounts/infrastructure/accounts-infrastructure.module';
 import { TransactionsModule } from './transactions/application/transactions.module';
 import { TransactionsInfrastructureModule } from './transactions/infrastructure/transactions-infrastructure.module';
+import { UsersAclModule } from './users/infrastructure/users-acl.module';
 
 @Module({
   imports: [],
@@ -15,12 +16,17 @@ import { TransactionsInfrastructureModule } from './transactions/infrastructure/
 })
 export class AppModule {
   static register(options: ApplicationBootstrapOptions) {
+    const usersAclModule = UsersAclModule.withInfrastructure(
+      UsersInfrastructureModule.use(options),
+    );
+
     return {
       module: AppModule,
       imports: [
         CoreModule.forRoot(options),
         UsersModule.withInfrastructure({
           module: UsersInfrastructureModule.use(options),
+          acls: [usersAclModule],
         }),
         AccountsModule.withInfrastructure({
           module: AccountsInfrastructureModule.use(options),
