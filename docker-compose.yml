@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:latest
+    container_name: fin_track_db
+    environment:
+      POSTGRES_USER: fin_track
+      POSTGRES_PASSWORD: fin_track
+      POSTGRES_DB: fin_track
+    ports:
+      - '5432:5432'
