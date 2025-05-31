@@ -1,34 +1,31 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+set -e
 
 echo "🔍 Executando pre-commit hook..."
 
-STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|ts|jsx|tsx)$')
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|ts|jsx|tsx)$' || true)
 if [ -z "$STAGED_FILES" ]; then
   echo "⚠️ Nenhum arquivo relevante para lint encontrado. Pulando lint..."
   exit 0
 fi
 
 echo "🧹 Rodando ESLint nos arquivos staged..."
-npx eslint $STAGED_FILES
-if [ $? -ne 0 ]; then
+npx eslint $STAGED_FILES || {
   echo "❌ ESLint falhou. Corrija os erros antes de commitar."
   exit 1
-fi
+}
 
 echo "🧪 Rodando testes..."
-npx jest --bail --findRelatedTests --passWithNoTests $STAGED_FILES
-if [ $? -ne 0 ]; then
+npx jest --bail --findRelatedTests --passWithNoTests $STAGED_FILES || {
   echo "❌ Alguns testes falharam. Corrija-os antes de commitar."
   exit 1
-fi
+}
 
 echo "🎨 Rodando Prettier..."
-npx prettier --check $STAGED_FILES
-if [ $? -ne 0 ]; then
+npx prettier --check $STAGED_FILES || {
   echo "❌ Prettier encontrou arquivos mal formatados. Rode 'npx prettier --write .'"
   exit 1
-fi
+}
 
 echo "✅ Pre-commit passou com sucesso!"
 exit 0
