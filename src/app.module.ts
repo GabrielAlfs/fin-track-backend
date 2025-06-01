@@ -10,9 +10,20 @@ import { TransactionsModule } from './contexts/transactions/application/transact
 import { TransactionsInfrastructureModule } from './contexts/transactions/infrastructure/transactions-infrastructure.module';
 import { UsersAclModule } from './contexts/users/infrastructure/users-acl.module';
 import { AccountsAclModule } from './contexts/accounts/infrastructure/accounts-acl.module';
+import { CqrsModule } from '@nestjs/cqrs';
+import { ConfigModule } from '@nestjs/config';
+import configuration from './core/config/configuration';
+import { envValidate } from './core/config/env.validation';
 
 @Module({
-  imports: [],
+  imports: [
+    CqrsModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [configuration],
+      validate: envValidate,
+    }),
+  ],
   controllers: [AppController],
 })
 export class AppModule {
@@ -38,6 +49,7 @@ export class AppModule {
         }),
         TransactionsModule.withInfrastructure({
           module: TransactionsInfrastructureModule.use(options),
+          acls: [usersAclModule, accountsAclModule],
         }),
       ],
     };

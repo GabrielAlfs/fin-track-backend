@@ -26,4 +26,8 @@ export class Transaction implements TransactionParams {
   constructor(params: TransactionParams) {
     Object.assign(this, params);
   }
+
+  isRefund(): boolean {
+    return this.type === TransactionType.REFUND;
+  }
 }

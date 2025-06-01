@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { PrismaPersistenceModule } from './prisma/prisma-persistence.module';
 import { ApplicationBootstrapOptions } from 'src/common/interfaces/application-bootstrap-options.interface';
+import { MandatoryModule } from './mandatory/mandatory.module';
 
 @Module({})
 export class TransactionsInfrastructureModule {
@@ -12,8 +13,8 @@ export class TransactionsInfrastructureModule {
 
     return {
       module: TransactionsInfrastructureModule,
-      imports: [...persistenceModules],
-      exports: [...persistenceModules],
+      imports: [MandatoryModule, ...persistenceModules],
+      exports: [MandatoryModule, ...persistenceModules],
     };
   }
 }
